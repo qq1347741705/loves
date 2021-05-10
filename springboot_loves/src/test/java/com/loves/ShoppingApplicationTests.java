@@ -23,13 +23,7 @@ class ShoppingApplicationTests {
 
     @Test
     void test(){
-        String token = JWTUtil.getToken("qianrentao");
-        System.out.println(token);
-        try {
-            JWTUtil.checkToken(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
     }
 
     @Test
