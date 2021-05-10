@@ -16,7 +16,7 @@
           <div id="div4">
             <span class="el-icon-s-custom">: </span>&nbsp;&nbsp;
 
-            <span> {{ blog.author }}</span
+            <span> {{ blog.name }}</span
             ><br />
             <span class="el-icon-time">: </span>
             <span id="timeShow"> {{ blog.strTime }}</span>
@@ -83,8 +83,9 @@ export default {
           },
         })
         .then((res) => {
-          this.blogInfo = res.data.blogInfo;
-          this.total = res.data.total;
+          if (this.$checkLogin(res, this) == false) return;
+          this.blogInfo = res.data.data.blogInfo;
+          this.total = res.data.data.total;
         })
         .catch((err) => {
           console.log(err);
@@ -104,7 +105,8 @@ export default {
           },
         })
         .then((res) => {
-          this.blog = res.data;
+          if (this.$checkLogin(res, this) == false) return;
+          this.blog = res.data.data;
           this.blogShow = true;
         })
         .catch((err) => {
@@ -127,10 +129,10 @@ export default {
               id: this.blog.id,
             })
             .then((res) => {
-              if (res.data.status != 0) return;
+              if (this.$checkLogin(res, this) == false) return;
               this.$message({
                 type: "success",
-                message: "删除成功!"
+                message: "删除成功!",
               });
               this.blogShow = false;
               this.getAllBlog();
@@ -146,15 +148,13 @@ export default {
           });
         });
     },
-
   },
   mounted: function () {
-    this.$myfun();
     //window.sessionStorage.setItem("currentPage", 1);
     //window.vue = this;
     // var curPage = Number(window.sessionStorage.getItem("currentPage"));
     // if (curPage != 1) this.currentPage = curPage;
-    this.currentUser = window.sessionStorage.getItem("username");
+    this.currentUser = window.sessionStorage.getItem("currentUser");
     this.getAllBlog();
   },
 };

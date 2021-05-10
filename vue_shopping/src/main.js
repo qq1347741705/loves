@@ -15,13 +15,15 @@ Vue.config.productionTip = false
 axios.defaults.baseURL = "http://10.22.77.37:9000/"
 Vue.prototype.$http = axios
 
-const myfun = function () {
-  var token = window.sessionStorage.getItem("token");
-  if(token == null){
-    this.$router.push('/login');
+Vue.prototype.$checkLogin = (res,vue) => {
+  if(res.data.meta.status != 200){
+    vue.$message.error(res.data.meta.msg);
+    window.sessionStorage.removeItem("token");
+    vue.$router.push('/login');
+    return false;
   }
+  return true;
 }
-Vue.prototype.$myfun = myfun
 
 axios.interceptors.request.use(config => {
   // console.log(config)

@@ -36,23 +36,20 @@ export default {
   methods: {
     exit: function () {
       window.sessionStorage.removeItem('currentUser');
+      window.sessionStorage.removeItem('token');
       this.$router.push('/login');
     },
     getImg: function () {
-      var user = window.sessionStorage.getItem('currentUser');
-      this.$http.get('/getImg',{
-        params: {
-          account: user
-        }
-      }).then((res) => {
-        this.img = res.data.img;
+      this.$http.get('/getImg').then((res) => {
+        if(this.$checkLogin(res,this) == false)
+            return;
+        this.img = res.data.data.img;
       }).catch((err) => {
         console.log(err);
       });
     }
   },
   mounted: function () {
-    this.$myfun();
     this.getImg();
   }
 };

@@ -29,9 +29,7 @@ export default {
     };
   },
   methods: {},
-
   mounted: function () {
-    this.$myfun();
     var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
     this.timer = setInterval(function () {
       _this.date = new Date() - new Date("2020/5/1 18:00");

@@ -41,15 +41,14 @@ export default {
       if (this.editorContent == "") {
         this.$message.error("请输入内容！！！！");
       }
-      var author = window.sessionStorage.getItem('username');
       this.$http
-        .post("/uploadContent", {
+        .post("/uploadBlog", {
           content: this.editorContent,
-          author: author,
           title: this.title
         })
         .then((res) => {
-          if (res.data.status == 0) console.log("success");
+          if(this.$checkLogin(res,this) == false)
+            return;
           this.title = '';
           this.editor.txt.clear();
           this.$message({
@@ -71,7 +70,6 @@ export default {
     },
   },
   mounted() {
-    this.$myfun();
     this.editor = new E(this.$refs.editor);
     //内容发送改变时执行的函数
     this.editor.config.onchange = (newHtml) => {
